@@ -1,0 +1,8 @@
+.DS_Store
+*.html
+dist
+build
+__pycache__
+*.c
+*egg-info
+*.lock

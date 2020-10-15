@@ -1,10 +1,14 @@
 import re
 import sys
 import os
+import argparse
+import colorama
+from colorama import init
+from argparse import ArgumentParser
 
-STD_FILE_ENDING = '.n'
-VERSION = '1.0beta'
-NAME = 'NEO LANG'
+STD_FILE_ENDING = '.hex'
+VERSION = '0.0.1'
+NAME = 'HEX LANG'
 AUTHOR = 'Alexander Abraham'
 LICENSE = 'MIT license'
 class Utils:
@@ -26,7 +30,7 @@ class Utils:
         try:
             os.system('g++')
         except Exception as error:
-            print(str(error))
+            print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
             sys.exit()
 class Lexer:
     def __init__(self,string):
@@ -126,24 +130,22 @@ class IR:
     def ir(self):
         ir = []
         for stat in self.ast:
-            print('\n\n')
             for key in stat:
-                print(key + ':')
-                stat_dict = {}
+                new_dict = {}
+                new_list = []
                 for token in stat[key]:
-                    new_list = []
-                    for myst in self.ir_statements:
-                        if token[0] == myst:
-                            pass
-                        else:
-                            new_list.append(token[1])
-                    stat_dict[key] = new_list
-                    ir.append(stat_dict)
-                    del new_list
-                del stat_dict
+                    if token[0] not in self.ir_statements:
+                        new_list.append(token)
+                    else:
+                        pass
+                new_dict[key] = new_list
+                ir.append(new_dict)
+                del new_dict
+                del new_list
         return ir
     def visual(self):
-        print(self.ir())
+        for y in self.ir():
+            print(y)
 class CodeGen:
     def __init__(self,string):
         self.string = string
@@ -153,20 +155,150 @@ class CodeGen:
         'VARIABLE_STRING':'string IDENTIFIER = STRING;'
         }
         self.code = []
-    def cg(self):
+    def prep(self):
         self.code.append('#include <iostream>')
         self.code.append('#using namespace std;')
         self.code.append('int main() {')
-        for key in self.ir:
-            pass
-        self.code.append('\treturn 0;')
+        for stat in self.ir:
+            for key in stat:
+                if key in self.cg_statements:
+                    old_string = self.cg_statements[key]
+                    im_list = []
+                    for i in stat[key]:
+                        im_list.append(i[0])
+                        if i[0] in self.cg_statements[key]:
+                            new_string = old_string.replace(i[0],i[1])
+                            old_string = new_string
+                            if i[0] not in new_string:
+                                for type in im_list:
+                                    if type in new_string:
+                                        pass
+                                    else:
+                                        fc = ' '*2 + new_string
+                                        self.code.append(fc)
+                                        break
+
+                            else:
+                                pass
+                else:
+                    pass
+        self.code.append('  return 0;')
         self.code.append('}')
-        return '\n'.join(self.code)
+        raw_string = '\n'.join(self.code)
+        return raw_string
+    def stage_two(self):
+        old = self.prep().split('\n')
+        string_list = []
+        for i in old:
+            for stat in self.ir:
+                for key in stat:
+                        for item in stat[key]:
+                            if item[0] in string_list:
+                                pass
+                            else:
+                                string_list.append(item[0])
+        return string_list
+    def final_stage(self):
+        old_list = self.prep().split('\n')
+        for i in old_list:
+            for x in self.stage_two():
+                if x in i:
+                    lindex = old_list.index(i)
+                    old_list.pop(lindex)
+                else:
+                    pass
+        return old_list
+    def cg(self):
+        return '\n'.join(self.final_stage())
     def visual(self):
         print(self.cg())
 
+class Manager:
+    def __init__(self, file):
+        self.file = file
+        self.utils = Utils()
+        self.cpp_name = self.utils.return_cpp_name(self.file)
+        self.bin_name = self.utils.return_bin_name(self.file)
+        self.hex_code = self.utils.read_from_file(self.file)
+        self.cpp_code = CodeGen(self.hex_code).cg()
+    def cpp(self):
+        try:
+            cpp_file = open(self.cpp_name, 'w')
+            cpp_file = open(self.cpp_name, 'a')
+            cpp_file.write(self.cpp_code)
+            cpp_file.close()
+        except Exception as errror:
+            print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
+            sys.exit()
+        if os.path.isfile(self.cpp_name) == True:
+            print(colorama.Fore.CYAN + 'Transpilation finished!' + colorama.Back.RESET)
+        else:
+            print(colorama.Fore.RED + 'Transpilation failed!' + colorama.Back.RESET)
+    def binary(self,static):
+        compiler_command = [
+        'g++'
+        ]
+        self.cpp()
+        if static == True:
+            compiler_command.append(self.file)
+            compiler_command.append('-o')
+            compiler_command.append(self.bin_name)
+            compiler_command.append('-static')
+            try:
+                os.system(' '.join(compiler_command))
+            except Exception as error:
+                print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
+                sys.exit()
+        else:
+            compiler_command.append(self.file)
+            compiler_command.append('-o')
+            compiler_command.append(self.bin_name)
+            try:
+                os.system(' '.join(compiler_command))
+            except Exception as error:
+                print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
+                sys.exit()
+    def lint(self):
+        try:
+            AST(self.hex_code).linter()
+            print(colorama.Fore.GREEN + 'Checks passed!' + colorama.Back.RESET)
+        except Exception as error:
+            print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
+            print(colorama.Fore.GREEN + 'Checks failed!' + colorama.Back.RESET)
+            sys.exit()
+
+
+class HexLang:
+    def run(self):
+        Utils().check_env()
+        parser = ArgumentParser()
+        parser.add_argument('--version', help='displays version info', action='store_true')
+        parser.add_argument('--static', help='compile a hexLang file statically', action='store_true')
+        parser.add_argument('--lint', help='check if the code is correct')
+        parser.add_argument('--cpp', help='convert a HexLang file to a C++ file')
+        parser.add_argument('--bin', help='compile a HexLang file to a binary executable')
+        args = parser.parse_args()
+        if args.version:
+            version_info = NAME + ' ' + VERSION + '\n by ' + AUTHOR + '\nlicensed under the ' + LICENSE
+            print(colorama.Fore.MAGENTA + version_info + colorama.Back.RESET)
+        elif args.cpp:
+            manager = Manager(str(args.cpp))
+            manager.cpp()
+        elif args.linter:
+            manager = Manager(str(args.cpp))
+            manager.lint()
+        elif args.bin and args.static:
+            manager = Manager(str(args.bin))
+            manager.binary(True)
+        elif args.bin:
+            manager = Manager(str(args.bin))
+            manager.binary(False)
+        else:
+            print(colorama.Fore.CYAN + 'Wrong argument combo provided!\nTry the "--help" flag!' + colorama.Back.RESET)
+            sys.exit()
+
+
 def main():
-    line = 'var hello = 45.6;\nvar two = 47.6;'
-    IR(line).visual()
+    HexLang().run()
 if __name__ == '__main__':
     main()

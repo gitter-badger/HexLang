@@ -22,25 +22,25 @@ def get_ext_paths(root_dir, exclude_files):
 setup(
     name='Ksylo',
     version=version(),
-    description='A compiler for the Hex language. Hex by Alexander Abraham',
+    description='a simple compiled programming language',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/RealAAbraham/HexLang',
     author='Alexander Abraham',
     packages=find_packages(),
     python_requires='>=3.5',
-    install_requires=['pip', 'setuptools', 'wheel', 'colorama', 'cython', 'requests'],
+    install_requires=['pip', 'setuptools', 'wheel', 'colorama', 'cython'],
     ext_modules=cythonize(
-        get_ext_paths('ksylo', EXCLUDE_FILES),
+        get_ext_paths('hex', EXCLUDE_FILES),
         compiler_directives={'language_level': 3}
     ),
     entry_points={
         'console_scripts': [
-            'ksite=ksylo.ksite:main',
+            'hex=hex.hex:main',
         ],
     },
     project_urls={
-        'Bug Reports': 'https://github.com/RealAAbraham/Ksylo/issues',
-        'Source': 'https://github.com/RealAAbraham/Ksylo',
+        'Bug Reports': 'https://github.com/RealAAbraham/HexLang/issues',
+        'Source': 'https://github.com/RealAAbraham/HexLang',
     },
 )

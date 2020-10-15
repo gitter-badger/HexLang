@@ -15,7 +15,6 @@ Hex Lang is a simple, compiled programming language, implemented in Python.
 - [BUILDING](website/building.html)
 - [CONTRIBUTING](website/contributing.html)
 - [LICENSE](website/license.html)
-- [LANDING PAGE](https://hexlang.net)
 
 ## NOTE
 - HexLang by Alexander Abraham

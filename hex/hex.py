@@ -1,11 +1,16 @@
-import re
-import sys
-import os
-import argparse
-import colorama
-from colorama import init
-from argparse import ArgumentParser
-
+# Hex Lang by Alexander Abraham
+# licensed under the MIT license
+try:
+    import re
+    import sys
+    import os
+    import argparse
+    import colorama
+    from colorama import init
+    from argparse import ArgumentParser
+except Exception as error:
+    print(str(error))
+    exit()
 STD_FILE_ENDING = '.hex'
 VERSION = '0.0.1'
 NAME = 'HexLang'
@@ -14,7 +19,8 @@ LICENSE = 'MIT license'
 class Utils:
     def read_from_file(self, code_file):
         try:
-            return open(code_file, 'r').readlines()
+            my_string = str(''.join(open(code_file, 'r').readlines()))
+            return my_string
         except Exception as error:
             print(str(error))
             exit()
@@ -23,9 +29,9 @@ class Utils:
         base_name = items_list[0]
         return base_name
     def return_cpp_name(self, code_file):
-        self.return_base_name(code_file) + '.cpp'
+        return self.return_base_name(code_file) + '.cpp'
     def return_bin_name(self, code_file):
-        self.return_base_name(code_file) + '.bin'
+        return self.return_base_name(code_file) + '.bin'
     def check_env(self):
         try:
             os.system('g++')
@@ -37,7 +43,7 @@ class Lexer:
         self.string = string
     def program_tokens(self):
         tokens = {
-        'OUT':r'stdout',
+        #'OUT':r'stdout',
         'VARABLE_DECLARATOR':r'var',
         'IDENTIFIER':r'\b(?!(?:func|var|return|while|for|[0-9]+)\b)\w+',
         'EQUALS':r'\=',
@@ -73,13 +79,15 @@ class Lexer:
         print(self.lex())
         for i in self.lex():
             print(str(i[0]) + ' : ' + str(i[1]))
-
 class AST:
     def __init__(self, string):
         self.string = string
         self.patterns = {
         'VARIABLE_NUMBER':'VARABLE_DECLARATOR IDENTIFIER EQUALS FLOAT SEMICOLON',
         'VARIABLE_STRING':'VARABLE_DECLARATOR IDENTIFIER EQUALS STRING SEMICOLON'
+        #'PRINT_STATEMENT_VARIABLE':'VARABLE_DECLARATOR IDENTIFIER EQUALS STRING SEMICOLON',
+        #'PRINT_STATEMENT_VARIABLE':'VARABLE_DECLARATOR IDENTIFIER EQUALS STRING SEMICOLON',
+        #'PRINT_STATEMENT_VARIABLE':'VARABLE_DECLARATOR IDENTIFIER EQUALS STRING SEMICOLON'
         }
         self.lexed = Lexer(self.string).lex()
     def ast(self):
@@ -157,7 +165,7 @@ class CodeGen:
         self.code = []
     def prep(self):
         self.code.append('#include <iostream>')
-        self.code.append('#using namespace std;')
+        self.code.append('using namespace std;')
         self.code.append('int main() {')
         for stat in self.ir:
             for key in stat:
@@ -177,7 +185,6 @@ class CodeGen:
                                         fc = ' '*2 + new_string
                                         self.code.append(fc)
                                         break
-
                             else:
                                 pass
                 else:
@@ -212,7 +219,6 @@ class CodeGen:
         return '\n'.join(self.final_stage())
     def visual(self):
         print(self.cg())
-
 class Manager:
     def __init__(self, file):
         self.file = file
@@ -235,41 +241,40 @@ class Manager:
         else:
             print(colorama.Fore.RED + 'Transpilation failed!' + colorama.Back.RESET)
     def binary(self,static):
-        compiler_command = [
-        'g++'
-        ]
+        compiler_command = ['g++']
         self.cpp()
         if static == True:
-            compiler_command.append(self.file)
+            compiler_command.append(self.cpp_name)
             compiler_command.append('-o')
             compiler_command.append(self.bin_name)
             compiler_command.append('-static')
+            myc = str(' '.join(compiler_command))
+            print(colorama.Fore.MAGENTA + 'Running: "' + myc + '"' + colorama.Back.RESET)
             try:
-                os.system(' '.join(compiler_command))
+                os.system(myc)
             except Exception as error:
                 print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
                 sys.exit()
         else:
-            compiler_command.append(self.file)
+            compiler_command.append(self.cpp_name)
             compiler_command.append('-o')
             compiler_command.append(self.bin_name)
+            myc = str(' '.join(compiler_command))
+            print(colorama.Fore.MAGENTA + 'Running: "' + myc + '"' + colorama.Back.RESET)
             try:
-                os.system(' '.join(compiler_command))
+                os.system(myc)
             except Exception as error:
                 print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
                 sys.exit()
     def lint(self):
-        try:
-            AST(self.hex_code).linter()
+        if AST(self.hex_code).linter() == 0:
             print(colorama.Fore.GREEN + 'Checks passed!' + colorama.Back.RESET)
-        except Exception as error:
-            print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
-            print(colorama.Fore.GREEN + 'Checks failed!' + colorama.Back.RESET)
-            sys.exit()
+        else:
+            print(colorama.Fore.RED + 'Checks failed!' + colorama.Back.RESET)
     def verbose(self):
-        CodeGen(self.cpp_code).visual()
-
-
+        print('\n\n')
+        print(colorama.Fore.MAGENTA + self.cpp_code + colorama.Back.RESET)
+        print('\n\n')
 class HexLang:
     def run(self):
         Utils().check_env()
@@ -282,13 +287,13 @@ class HexLang:
         parser.add_argument('--verbose', help='print out C++ code for a HexLang file')
         args = parser.parse_args()
         if args.version:
-            version_info = NAME + ' ' + VERSION + '\n by ' + AUTHOR + '\nlicensed under the ' + LICENSE
+            version_info = NAME + ' ' + VERSION + '\nby ' + AUTHOR + '\nlicensed under the ' + LICENSE
             print(colorama.Fore.MAGENTA + version_info + colorama.Back.RESET)
         elif args.cpp:
             manager = Manager(str(args.cpp))
             manager.cpp()
         elif args.lint:
-            manager = Manager(str(args.cpp))
+            manager = Manager(str(args.lint))
             manager.lint()
         elif args.bin and args.static:
             manager = Manager(str(args.bin))
@@ -302,8 +307,6 @@ class HexLang:
         else:
             print(colorama.Fore.CYAN + 'Wrong argument combo provided!\nTry the "--help" flag!' + colorama.Back.RESET)
             sys.exit()
-
-
 def main():
     HexLang().run()
 if __name__ == '__main__':

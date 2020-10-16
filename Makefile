@@ -3,4 +3,4 @@
 build: ; python setup.py sdist
 install: ; python -m pip uninstall HexLang && python -m pip install git+https://github.com/RealAAbraham/HexLang.git
 clean: ; rm -rf *egg-info build dist hexlang/*.c hexlang/__pycache__ *.html
-test: ; cd sample && hex --verbose example.hex
+test: ; cd tests && bash tests.sh

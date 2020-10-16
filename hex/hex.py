@@ -18,7 +18,7 @@ class Utils:
         except Exception as error:
             print(str(error))
             exit()
-    def return_base(self, code_file):
+    def return_base_name(self, code_file):
         items_list = code_file.split(STD_FILE_ENDING)
         base_name = items_list[0]
         return base_name

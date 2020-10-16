@@ -287,7 +287,7 @@ class HexLang:
         elif args.cpp:
             manager = Manager(str(args.cpp))
             manager.cpp()
-        elif args.linter:
+        elif args.lint:
             manager = Manager(str(args.cpp))
             manager.lint()
         elif args.bin and args.static:

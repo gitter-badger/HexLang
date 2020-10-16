@@ -34,7 +34,7 @@ class Utils:
         return self.return_base_name(code_file) + '.bin'
     def check_env(self):
         try:
-            os.system('g++')
+            os.system('g++ --version')
         except Exception as error:
             print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
             sys.exit()

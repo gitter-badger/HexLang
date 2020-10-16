@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/RealAAbraham/HexLang/raw/master/assets/images/logo/hex.png"/>
+  <img src="https://github.com/RealAAbraham/HexLang/raw/master/docs/assets/images/logo/hex.png"/>
 </p>
 
 # HEX LANG

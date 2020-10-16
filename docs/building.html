@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>HEX LANG</title>
+  <title>HEX LANG | BUILDING</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../assets/styles/styles.css"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -28,48 +28,55 @@
   <span class="subtitle">a simple compiled programming language</span>
   <div class="content">
    <p>
-    Lorem ipsum sit dolor amet.
-    Lorem ipdum sit dolor amet.
-    Lorem ipsum sit dolor amet.
-    Lorem ipsum sit dolor amet.
+    Building Hex is very simple. You should install Git, Make, Python, the GCC and Pip.
+    After that execute these steps in this order:
    </p>
   </div>
-  <div class="code">
-   <p>
-    // sample.cpp
-    <br/>
-    #include &lt;iostream&gt;
-    <br/>
-    using namespace std;
-    <br/>
-    int main () {
-    <br/>
-    &nbsp;&nbsp;&nbsp;cout &lt;&lt; "Hello World" &lt;&lt; endl;
-    <br/>
-    &nbsp;&nbsp;&nbsp;return 0;
-    <br/>
-    }
-   </p>
-  </div>
-  <div class="code">
-   <p>
-    # install it with Pip!
-    <br/>
-    $ python -m pip install TBA
-   </p>
-  </div>
+
   <div class="content">
    <p>
-    Lorem ipsum sit dolor amet.
-    Lorem ipsum sit dolor amet.
-    Lorem ipsum sit dolor amet.
-    Lorem ipsum sit dolor amet.
+    First, we need to clone the source tree. This happens with Git.
+    Open up a terminal in a folder of your choice and execute this command.
    </p>
   </div>
-  <!--<div class="footer">
-   <p>
-    TBA by MDSA Labs c/o Alexander Abraham
-   </p>
- </div>-->
+
+  <div class="code">
+   <p> $ git clone https://github.com/RealAAbraham/HexLang.git</p>
+ </div>
+
+ <div class="content">
+  <p>
+   Change directory and install all development dependencies executing this command:
+  </p>
+ </div>
+
+ <div class="code">
+  <p> cd HexLang</p>
+ </div>
+
+ <div class="code">
+  <p> $ python -m pip install -r requirements.txt</p>
+ </div>
+
+ <div class="content">
+  <p>
+   Finally, we build the Python package with this command:
+  </p>
+ </div>
+
+ <div class="code">
+  <p> $ python setup.py sdist </p>
+ </div>
+
+ <div class="content">
+  <p>
+   To install it and test the distribution, run this command:
+  </p>
+ </div>
+
+ <div class="code">
+  <p> $ python -m pip install dist/* </p>
+ </div>
+
  </body>
 </html>

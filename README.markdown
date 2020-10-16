@@ -10,11 +10,11 @@
 Hex Lang is a simple, compiled programming language, implemented in Python.
 
 ## DOCS
-- [USAGE](website/usage.html)
-- [LANGUAGE TOUR](website/tour.html)
-- [BUILDING](website/building.html)
-- [CONTRIBUTING](website/contributing.html)
-- [LICENSE](website/license.html)
+- [USAGE](https://hexlang.com/usage.html)
+- [LANGUAGE TOUR](https://hexlang.com/tour.html)
+- [BUILDING](https://hexlang.com/building.html)
+- [CONTRIBUTING](https://hexlang.com/contributing.html)
+- [LICENSE](https://hexlang.com/license.html)
 
 ## NOTE
 - HexLang by Alexander Abraham

@@ -51,6 +51,7 @@ div.content {
   margin-bottom: 50px;
   margin-top: 50px;
   border-radius: 5px;
+  overflow-x: scroll;
 }
 
 div.code {
@@ -61,6 +62,7 @@ div.code {
   margin-bottom: 50px;
   margin-top: 50px;
   border-radius: 5px;
+  overflow-x: scroll;
 }
 
 p {

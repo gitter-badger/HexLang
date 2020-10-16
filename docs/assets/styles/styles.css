@@ -45,7 +45,7 @@ span.subtitle {
 
 div.content {
   margin: 0 auto;
-  width: 50%;
+  width: 70%;
   background-color: var(--acc);
   color: var(--bg);
   margin-bottom: 50px;
@@ -55,7 +55,7 @@ div.content {
 
 div.code {
   margin: 0 auto;
-  width: 50%;
+  width: 70%;
   background-color: var(--code-bg);
   color: var(--drop-shadow);
   margin-bottom: 50px;

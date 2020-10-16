@@ -27,15 +27,81 @@
   <h1>HEX LANG</h1>
   <span class="subtitle">a simple compiled programming language</span>
   <div class="content">
-   <h2>Install Hex</h2>
+   <h2>Install Requirements on Windows</h2>
    <p>
-    To install Hex, you will need the GCC, Python 3+, Pip and Git. Execute this command:
+    Download Python 3.x for Windows from <a href="https://www.python.org/downloads/windows/">here</a>.
+    Execute the downloaded file and install Python. This should also give you Pip on your system.
+    Download Git for Windows from <a href="https://git-scm.com/download/win">here</a>.
+    Execute the downloaded file. Then, download Clang from <a href="https://releases.llvm.org/download.html">here</a>.
+    Check that all of these are available from the command line. Then, open a terminal and run this command:
+   </p>
+  </div>
+  
+  <div class="code">
+   <p>
+    $ python -m pip install git+https://github.com/RealAAbraham/HexLang.git
+   </p>
+  </div>
+  
+  <div class="content">
+   <h2>Install Requirements on Mac OSX</h2>
+   <p>
+    First, we need to install Homebrew. Run this command:
+   </p>
+  </div>
+  
+  <div class="code">
+   <p>
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+   </p>
+  </div>
+  
+  <div class="content">
+   <p>
+    Then, we need install Clang, Git and Python. Run this command:
+   </p>
+  </div>
+  
+  <div class="code">
+   <p>
+    brew install git clang python3
+   </p>
+  </div>
+  
+  <div class="content">
+   <p>
+    Check that all four above-mentioned programs are available from the command-line. Then, run this command:
    </p>
   </div>
 
   <div class="code">
    <p>
-    $ python -m pip install git+https://github.com/RealAAbraham/HexLang.git
+    $ python3 -m pip install git+https://github.com/RealAAbraham/HexLang.git
+   </p>
+  </div>
+  
+  <div class="content">
+   <h2>Install Requirements on Linux</h2>
+   <p>
+    We can install all requirements like this:
+   </p>
+  </div>
+  
+  <div class="code">
+   <p>
+    sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y clang python3 git python3-pip
+   </p>
+  </div>
+  
+  <div class="content">
+   <p>
+   Check that all four above-mentioned programs are available from the command-line. Then, we need to install Hex itself. Run this command:
+   </p>
+  </div>
+  
+  <div class="code">
+   <p>
+    $ python3 -m pip install git+https://github.com/RealAAbraham/HexLang.git
    </p>
   </div>
  </body>

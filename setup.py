@@ -3,7 +3,9 @@
 from setuptools import setup, find_packages
 import pathlib
 import os
-from ksylo.page import version
+from hex.hex import VERSION
+from hex.hex import AUTHOR
+from hex.hex import NAME
 from Cython.Build import cythonize
 here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / 'README.markdown').read_text(encoding='utf-8')
@@ -20,13 +22,13 @@ def get_ext_paths(root_dir, exclude_files):
             paths.append(file_path)
     return paths
 setup(
-    name='Ksylo',
-    version=version(),
+    name=NAME,
+    version=VERSION,
     description='a simple compiled programming language',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/RealAAbraham/HexLang',
-    author='Alexander Abraham',
+    author=AUTHOR,
     packages=find_packages(),
     python_requires='>=3.5',
     install_requires=['pip', 'setuptools', 'wheel', 'colorama', 'cython'],

@@ -266,6 +266,8 @@ class Manager:
             print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
             print(colorama.Fore.GREEN + 'Checks failed!' + colorama.Back.RESET)
             sys.exit()
+    def verbose(self):
+        CodeGen(self.cpp_code).visual()
 
 
 class HexLang:
@@ -277,6 +279,7 @@ class HexLang:
         parser.add_argument('--lint', help='check if the code is correct')
         parser.add_argument('--cpp', help='convert a HexLang file to a C++ file')
         parser.add_argument('--bin', help='compile a HexLang file to a binary executable')
+        parser.add_argument('--verbose', help='print out C++ code for a HexLang file')
         args = parser.parse_args()
         if args.version:
             version_info = NAME + ' ' + VERSION + '\n by ' + AUTHOR + '\nlicensed under the ' + LICENSE
@@ -293,6 +296,9 @@ class HexLang:
         elif args.bin:
             manager = Manager(str(args.bin))
             manager.binary(False)
+        elif args.verbose:
+            manager = Manager(str(args.verbose))
+            manager.verbose()
         else:
             print(colorama.Fore.CYAN + 'Wrong argument combo provided!\nTry the "--help" flag!' + colorama.Back.RESET)
             sys.exit()

@@ -1,0 +1,6 @@
+# HexLang by Alexander Abraham
+# licensed under the MIT license
+language: "python"
+python:
+  - "3.8"
+script: "make install && make clean && make test"

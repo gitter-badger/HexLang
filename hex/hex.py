@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 STD_FILE_ENDING = '.hex'
 VERSION = '0.0.1'
-NAME = 'HEX LANG'
+NAME = 'HexLang'
 AUTHOR = 'Alexander Abraham'
 LICENSE = 'MIT license'
 class Utils:
@@ -227,7 +227,7 @@ class Manager:
             cpp_file = open(self.cpp_name, 'a')
             cpp_file.write(self.cpp_code)
             cpp_file.close()
-        except Exception as errror:
+        except Exception as error:
             print(colorama.Fore.RED + str(error) + colorama.Back.RESET)
             sys.exit()
         if os.path.isfile(self.cpp_name) == True:

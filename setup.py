@@ -1,4 +1,4 @@
-# KSYLO by Alexander Abraham
+# Hex Lang by Alexander Abraham
 # licensed under the MIT license
 from setuptools import setup, find_packages
 import pathlib
